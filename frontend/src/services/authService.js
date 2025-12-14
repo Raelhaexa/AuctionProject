@@ -81,9 +81,32 @@ export const getToken = () => {
   return localStorage.getItem('token');
 };
 
+// Check if token is expired
+export const isTokenExpired = (token) => {
+  if (!token) return true;
+  
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expirationTime = payload.exp * 1000; // Convert to milliseconds
+    return Date.now() >= expirationTime;
+  } catch (error) {
+    return true;
+  }
+};
+
 // Check if user is authenticated
 export const isAuthenticated = () => {
-  return !!getToken();
+  const token = getToken();
+  if (!token) return false;
+  
+  // Check if token is expired
+  if (isTokenExpired(token)) {
+    // Clear expired token
+    logout();
+    return false;
+  }
+  
+  return true;
 };
 
 // Add token to axios requests
@@ -99,3 +122,13 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export default {
+  login,
+  register,
+  logout,
+  getCurrentUser,
+  getToken,
+  isAuthenticated,
+  isTokenExpired
+};

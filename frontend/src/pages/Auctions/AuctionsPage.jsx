@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchAuctions, calculateTimeRemaining, deleteAuction, updateAuction, createAuction } from '../../services/auctionService';
 import { getCurrentUser } from '../../services/authService';
+import webSocketService from '../../services/webSocketService';
 import './AuctionsPage.css';
 
 const AuctionsPage = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [auctions, setAuctions] = useState([]);
@@ -24,7 +27,7 @@ const AuctionsPage = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
 
-  // Fetch auctions from API
+  // Fetch auctions from API and setup WebSocket
   useEffect(() => {
     const loadAuctions = async () => {
       try {
@@ -41,6 +44,40 @@ const AuctionsPage = () => {
 
     loadAuctions();
     setCurrentUser(getCurrentUser());
+
+    // Connect to WebSocket
+    webSocketService.connect(() => {
+      // Subscribe to new auctions
+      webSocketService.subscribeToAuctions((newAuction) => {
+        setAuctions((prev) => {
+          const exists = prev.find(a => a.id === newAuction.id);
+          if (!exists) {
+            return [newAuction, ...prev];
+          }
+          return prev;
+        });
+      });
+
+      // Subscribe to auction updates
+      webSocketService.subscribeToAuctionUpdates((updatedAuction) => {
+        setAuctions((prev) =>
+          prev.map((auction) =>
+            auction.id === updatedAuction.id ? updatedAuction : auction
+          )
+        );
+      });
+
+      // Subscribe to auction deletes
+      webSocketService.subscribeToAuctionDeletes((deletedId) => {
+        setAuctions((prev) => prev.filter((auction) => auction.id !== deletedId));
+      });
+    });
+
+    return () => {
+      webSocketService.unsubscribe('/topic/auctions');
+      webSocketService.unsubscribe('/topic/auctions/update');
+      webSocketService.unsubscribe('/topic/auctions/delete');
+    };
   }, []);
 
   // Close kebab menu when clicking outside
@@ -281,7 +318,11 @@ const AuctionsPage = () => {
           {/* Auctions Grid */}
           <div className="auctions-grid">
             {filteredAuctions.map((auction, index) => (
-              <div key={auction.id || index} className="auction-card">
+              <div 
+                key={auction.id || index} 
+                className="auction-card"
+                onClick={() => navigate(`/dashboard/auctions/${auction.id}`)}
+              >
                 <div className="auction-image">
                   {auction.imageUrl ? (
                     <img src={auction.imageUrl} alt={auction.title} className="auction-image-img" />
