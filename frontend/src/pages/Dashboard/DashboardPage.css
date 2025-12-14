@@ -1,0 +1,29 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #0f0f1e;
+}
+
+.dashboard-content {
+  margin-left: 280px;
+  flex: 1;
+  width: calc(100% - 280px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}

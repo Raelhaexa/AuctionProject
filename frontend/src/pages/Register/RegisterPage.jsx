@@ -93,7 +93,7 @@ const RegisterPage = () => {
             </div>
           </label>
 
-          <button type="submit" className="submit">Create Account</button>
+          <button type="submit" className="register-button">Create Account</button>
 
           <p className="login-link">
             Already have an account? <a href="/">Sign in</a>
