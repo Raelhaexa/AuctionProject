@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../services/authService";
 import "./Register.css";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstname: "",
     lastname: "",
@@ -11,9 +14,36 @@ const RegisterPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const update = (key, value) => {
     setForm({ ...form, [key]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const registerData = {
+        firstName: form.firstname,
+        lastName: form.lastname,
+        username: form.username,
+        email: form.email,
+        password: form.password,
+        role: "USER"
+      };
+
+      await register(registerData);
+      // Redirect to dashboard on successful registration
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,7 +60,13 @@ const RegisterPage = () => {
         </div>
 
         {/* Form */}
-        <form className="register-card">
+        <form className="register-card" onSubmit={handleSubmit}>
+
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
 
           <div className="row">
             <label className="field">
@@ -40,6 +76,7 @@ const RegisterPage = () => {
                 placeholder="John"
                 value={form.firstname}
                 onChange={(e) => update("firstname", e.target.value)}
+                required
               />
             </label>
 
@@ -50,6 +87,7 @@ const RegisterPage = () => {
                 placeholder="Doe"
                 value={form.lastname}
                 onChange={(e) => update("lastname", e.target.value)}
+                required
               />
             </label>
           </div>
@@ -61,6 +99,8 @@ const RegisterPage = () => {
               placeholder="john_doe"
               value={form.username}
               onChange={(e) => update("username", e.target.value)}
+              required
+              minLength="4"
             />
           </label>
 
@@ -71,6 +111,7 @@ const RegisterPage = () => {
               placeholder="you@company.com"
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
+              required
             />
           </label>
 
@@ -82,6 +123,8 @@ const RegisterPage = () => {
                 placeholder="Create a strong password"
                 value={form.password}
                 onChange={(e) => update("password", e.target.value)}
+                required
+                minLength="6"
               />
               <button
                 type="button"
@@ -93,10 +136,12 @@ const RegisterPage = () => {
             </div>
           </label>
 
-          <button type="submit" className="register-button">Create Account</button>
+          <button type="submit" className="register-button" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
 
           <p className="login-link">
-            Already have an account? <a href="/">Sign in</a>
+            Already have an account? <a href="/login">Sign in</a>
           </p>
 
         </form>

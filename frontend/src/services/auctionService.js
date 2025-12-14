@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'http://localhost:8080/api/auctions';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -10,13 +10,26 @@ const api = axios.create({
   },
 });
 
+// Add token to requests if available
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Fetch all auctions
 export const fetchAuctions = async () => {
   try {
-    const response = await api.get('/auctions');
+    const response = await api.get('');
     return response.data;
   } catch (error) {
-    console.error('Error fetching auctions:', error);
     throw error;
   }
 };
@@ -24,36 +37,19 @@ export const fetchAuctions = async () => {
 // Fetch auction by ID
 export const fetchAuctionById = async (id) => {
   try {
-    const response = await api.get(`/auctions/${id}`);
+    const response = await api.get(`/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching auction ${id}:`, error);
     throw error;
   }
 };
 
-// Search auctions by title
-export const searchAuctions = async (searchQuery) => {
+// Get open auctions only
+export const getOpenAuctions = async () => {
   try {
-    const response = await api.get('/auctions', {
-      params: { title_like: searchQuery }
-    });
+    const response = await api.get('/open');
     return response.data;
   } catch (error) {
-    console.error('Error searching auctions:', error);
-    throw error;
-  }
-};
-
-// Filter auctions by status
-export const filterAuctionsByStatus = async (status) => {
-  try {
-    const response = await api.get('/auctions', {
-      params: { status }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error filtering auctions:', error);
     throw error;
   }
 };
@@ -61,10 +57,9 @@ export const filterAuctionsByStatus = async (status) => {
 // Create new auction
 export const createAuction = async (auctionData) => {
   try {
-    const response = await api.post('/auctions', auctionData);
+    const response = await api.post('', auctionData);
     return response.data;
   } catch (error) {
-    console.error('Error creating auction:', error);
     throw error;
   }
 };
@@ -72,10 +67,9 @@ export const createAuction = async (auctionData) => {
 // Update auction
 export const updateAuction = async (id, auctionData) => {
   try {
-    const response = await api.put(`/auctions/${id}`, auctionData);
+    const response = await api.put(`/${id}`, auctionData);
     return response.data;
   } catch (error) {
-    console.error(`Error updating auction ${id}:`, error);
     throw error;
   }
 };
@@ -83,10 +77,9 @@ export const updateAuction = async (id, auctionData) => {
 // Delete auction
 export const deleteAuction = async (id) => {
   try {
-    await api.delete(`/auctions/${id}`);
+    await api.delete(`/${id}`);
     return true;
   } catch (error) {
-    console.error(`Error deleting auction ${id}:`, error);
     throw error;
   }
 };

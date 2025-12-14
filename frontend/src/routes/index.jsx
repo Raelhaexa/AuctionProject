@@ -1,12 +1,17 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/Login/LoginPage';
 import RegisterPage from '../pages/Register/RegisterPage';
 import DashboardPage from '../pages/Dashboard/DashboardPage';
 import Homepage from '../pages/Homepage/Homepage';
 import AuctionsPage from '../pages/Auctions/AuctionsPage';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 
 const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Navigate to="/login" replace />
+    },
     {
         path: '/login',
         element: <LoginPage />
@@ -17,7 +22,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardPage />,
+        element: (
+            <ProtectedRoute>
+                <DashboardPage />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 index: true,

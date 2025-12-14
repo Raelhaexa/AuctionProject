@@ -31,20 +31,6 @@ const Sidenav = () => {
           <span className="icon">🔨</span>
           <span>Auctions</span>
         </button>
-        <button 
-          className={`nav-item ${isActive('/dashboard/create') ? 'active' : ''}`}
-          onClick={() => navigate('/dashboard/create')}
-        >
-          <span className="icon">➕</span>
-          <span>Create Auction</span>
-        </button>
-        <button 
-          className={`nav-item ${isActive('/dashboard/profile') ? 'active' : ''}`}
-          onClick={() => navigate('/dashboard/profile')}
-        >
-          <span className="icon">👤</span>
-          <span>Profile</span>
-        </button>
       </nav>
 
       <div className="sidenav-footer">
