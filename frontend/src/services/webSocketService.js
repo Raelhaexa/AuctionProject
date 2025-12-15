@@ -16,8 +16,9 @@ class WebSocketService {
       return;
     }
 
+    const wsUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/ws` : '/ws';
     this.client = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      webSocketFactory: () => new SockJS(wsUrl),
       connectHeaders: {},
       debug: (str) => {
         // Uncomment for debugging

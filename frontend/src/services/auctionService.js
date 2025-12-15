@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auctions';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/auctions` : '/api/auctions';
 
 // Create axios instance with default config
 const api = axios.create({
