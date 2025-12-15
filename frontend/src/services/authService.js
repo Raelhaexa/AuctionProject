@@ -58,9 +58,55 @@ export const register = async (userData) => {
 };
 
 // Logout user
-export const logout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+export const logout = async () => {
+  try {
+    const token = getToken();
+    if (token) {
+      await api.post('/logout', {}, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+  } finally {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+};
+
+// Refresh token
+export const refreshToken = async () => {
+  try {
+    const token = getToken();
+    if (!token) {
+      return null;
+    }
+
+    const response = await api.post('/refresh', {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+      const user = {
+        username: response.data.username,
+        role: response.data.role
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      return response.data.token;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Token refresh error:', error);
+    // If refresh fails, logout user
+    logout();
+    return null;
+  }
 };
 
 // Get current user
@@ -127,6 +173,7 @@ export default {
   login,
   register,
   logout,
+  refreshToken,
   getCurrentUser,
   getToken,
   isAuthenticated,
