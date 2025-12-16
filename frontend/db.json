@@ -1,0 +1,106 @@
+{
+  "auctions": [
+    {
+      "id": "1",
+      "title": "Vintage Camera Collection",
+      "description": "A rare collection of vintage cameras from the 1960s including Leica M3, Canon AE-1, and Nikon F2. All in excellent working condition with original leather cases.",
+      "startingPrice": 350,
+      "currentPrice": 450,
+      "status": "OPEN",
+      "endTime": "2025-12-13T18:30:00"
+    },
+    {
+      "id": "2",
+      "title": "Rare Baseball Cards",
+      "description": "Complete set of 1989 Upper Deck baseball cards including Ken Griffey Jr. rookie card. All cards are in mint condition and professionally graded.",
+      "startingPrice": 800,
+      "currentPrice": 1200,
+      "status": "OPEN",
+      "endTime": "2025-12-13T20:15:00"
+    },
+    {
+      "id": "3",
+      "title": "Gaming Laptop RTX 4090",
+      "description": "High-end gaming laptop with RTX 4090 GPU, Intel i9-13900HX, 32GB RAM, 2TB NVMe SSD. Perfect for gaming and content creation. Like new condition.",
+      "startingPrice": 2000,
+      "currentPrice": 2500,
+      "status": "OPEN",
+      "endTime": "2025-12-12T16:45:00"
+    },
+    {
+      "id": "4",
+      "title": "Abstract Oil Painting",
+      "description": "Original abstract oil painting by emerging artist. Size: 36x48 inches. Signed and dated. Comes with certificate of authenticity.",
+      "startingPrice": 600,
+      "currentPrice": 800,
+      "status": "OPEN",
+      "endTime": "2025-12-14T10:20:00"
+    },
+    {
+      "id": "5",
+      "title": "Designer Watch Collection",
+      "description": "Luxury watch collection including Rolex Submariner, Omega Seamaster, and Tag Heuer Carrera. All authentic with original boxes and papers.",
+      "startingPrice": 3000,
+      "currentPrice": 3400,
+      "status": "OPEN",
+      "endTime": "2025-12-12T18:10:00"
+    },
+    {
+      "id": "6",
+      "title": "Antique Furniture Set",
+      "description": "Victorian-era furniture set including dining table, 6 chairs, and sideboard. Mahogany wood with intricate carvings. Professionally restored.",
+      "startingPrice": 1500,
+      "currentPrice": 1800,
+      "status": "OPEN",
+      "endTime": "2025-12-14T14:05:00"
+    },
+    {
+      "id": "7",
+      "title": "Vintage Vinyl Record Collection",
+      "description": "Over 200 classic vinyl records from the 60s-80s including The Beatles, Pink Floyd, Led Zeppelin. All in very good to excellent condition.",
+      "startingPrice": 400,
+      "currentPrice": 550,
+      "status": "OPEN",
+      "endTime": "2025-12-13T12:30:00"
+    },
+    {
+      "id": "8",
+      "title": "Professional Camera Drone",
+      "description": "DJI Mavic 3 Pro with 4K camera, multiple batteries, carrying case, and ND filters. Less than 10 hours of flight time.",
+      "startingPrice": 1800,
+      "currentPrice": 2100,
+      "status": "OPEN",
+      "endTime": "2025-12-13T09:45:00"
+    },
+    {
+      "id": "9",
+      "title": "Signed First Edition Books",
+      "description": "Collection of signed first edition books including works by Stephen King, J.K. Rowling, and Neil Gaiman. All in pristine condition.",
+      "startingPrice": 900,
+      "currentPrice": 900,
+      "status": "OPEN",
+      "endTime": "2025-12-15T16:00:00"
+    },
+    {
+      "id": "10",
+      "title": "Classic Arcade Machine",
+      "description": "Restored 1980s Pac-Man arcade machine. Fully functional with original cabinet art. Perfect for game rooms or collectors.",
+      "startingPrice": 1200,
+      "currentPrice": 1450,
+      "status": "CLOSED",
+      "endTime": "2025-12-11T20:00:00"
+    },
+    {
+      "id": "f7a1",
+      "title": "s",
+      "description": "s",
+      "startingPrice": 1,
+      "currentBid": 1,
+      "endDate": "2025-12-14T15:43",
+      "imageUrl": "",
+      "category": "",
+      "status": "active",
+      "bids": 0
+    }
+  ]
+}
