@@ -1,10 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../services/authService";
 import "./Login.css";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await login(username, password);
+      // Redirect to dashboard on successful login
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Invalid username or password");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="login-hero">
@@ -17,14 +38,21 @@ const LoginPage = () => {
           </div>
         </div>
 
-        <form className="login-card">
+        <form className="login-card" onSubmit={handleSubmit}>
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+
           <label className="field">
-            <span className="label">Email</span>
+            <span className="label">Username</span>
             <input
-              type="email"
-              placeholder="you@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </label>
 
@@ -36,6 +64,7 @@ const LoginPage = () => {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button
                 type="button"
@@ -56,9 +85,8 @@ const LoginPage = () => {
               Forgot?
             </a>
           </div>
-
-          <button type="submit" className="submit">
-            Sign in
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? "Signing in..." : "Sign in"}
           </button>
 
           <div className="divider">
@@ -66,12 +94,13 @@ const LoginPage = () => {
           </div>
 
           <div className="socials">
-            <button className="social google">Continue with Google</button>
+            <button type="button" className="social google">Continue with Google</button>
             
           </div>
 
           <p className="signup">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
+            <a href="/register">Create account</a>
             <a href="#">Create account</a>
           </p>
         </form>
